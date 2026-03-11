@@ -1,0 +1,258 @@
+.home{
+    padding: 0 10px;
+    padding-bottom: 100px;
+    
+}
+.hero{
+    max-width: 600px;
+    margin: 80px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+    animation: heroFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero h1{
+    font-size: 60px;
+    background: linear-gradient(90deg,#f5872d, #3f27ca, #f5872d);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
+}
+.hero p{
+    line-height: 1.5;
+}
+.hero form{
+    padding: 8px;
+    width: 80%;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+.hero form:focus-within {
+  box-shadow: 0 8px 32px rgba(63, 39, 202, 0.35);
+  transform: translateY(-2px);
+}
+.hero input{
+    flex: 1;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    padding-left: 10px;
+}
+.hero button{
+    border: none;
+    background: #333333;
+    color: white;
+    font-size: 16px;
+    padding: 10px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.35s ease, transform 0.25s ease, box-shadow 0.35s ease;
+}
+.hero button:hover{
+    background: #3f27ca;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(63, 39, 202, 0.4);
+}
+.crypto-table{
+    max-width: 800px;
+    margin: auto;
+    background: linear-gradient(rgba(245, 135, 45, 0.55),rgba(63, 39, 202, 0.55));
+    border-radius: 15px;
+    animation: tableFadeIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
+}
+@keyframes tableFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.table-layouts{
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1.5fr;
+    padding: 15px 20px;
+    align-items: center;
+    border-bottom: 1px solid #3c3c3c;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+    animation: rowFadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.table-layouts:hover{
+    background: #3f27ca;
+    transform: translateX(4px);
+}
+.crypto-table .table-layouts:nth-child(3) { animation-delay: 0.02s; }
+.crypto-table .table-layouts:nth-child(4) { animation-delay: 0.05s; }
+.crypto-table .table-layouts:nth-child(5) { animation-delay: 0.08s; }
+.crypto-table .table-layouts:nth-child(6) { animation-delay: 0.11s; }
+.crypto-table .table-layouts:nth-child(7) { animation-delay: 0.14s; }
+.crypto-table .table-layouts:nth-child(8) { animation-delay: 0.17s; }
+.crypto-table .table-layouts:nth-child(9) { animation-delay: 0.2s; }
+.crypto-table .table-layouts:nth-child(10) { animation-delay: 0.23s; }
+.crypto-table .table-layouts:nth-child(11) { animation-delay: 0.26s; }
+.crypto-table .table-layouts:nth-child(12) { animation-delay: 0.29s; }
+.crypto-table .table-layouts:nth-child(13) { animation-delay: 0.32s; }
+.crypto-table .table-layouts:nth-child(14) { animation-delay: 0.35s; }
+.crypto-table .table-layouts:nth-child(15) { animation-delay: 0.38s; }
+.crypto-table .table-layouts:nth-child(16) { animation-delay: 0.41s; }
+.crypto-table .table-layouts:nth-child(17) { animation-delay: 0.44s; }
+.crypto-table .table-layouts:nth-child(18) { animation-delay: 0.47s; }
+.crypto-table .table-layouts:nth-child(19) { animation-delay: 0.5s; }
+.crypto-table .table-layouts:nth-child(20) { animation-delay: 0.53s; }
+@keyframes rowFadeIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.table-layout{
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1.5fr;
+    padding: 15px 20px;
+    align-items: center;
+    border-bottom: 1px solid #3c3c3c;
+}
+.table-layouts:hover{
+    background: #3f27ca;
+}
+.table-layouts.selected{
+    background: rgba(63, 39, 202, 0.85);
+    border-left: 4px solid #f5872d;
+    border-right: 4px solid #f5872d;
+}
+.table-layouts.selected:hover{
+    background: rgba(63, 39, 202, 0.9);
+}
+.crypto-table.has-watchlist .table-layout,
+.crypto-table.has-watchlist .table-layouts {
+  grid-template-columns: 0.5fr 2fr 1fr 1fr 1.5fr 48px;
+}
+.crypto-table .watchlist-star {
+  background: none;
+  border: none;
+  font-size: 1.35rem;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  padding: 6px 8px;
+  line-height: 1;
+  transition: transform 0.2s, color 0.2s;
+  border-radius: 8px;
+}
+.crypto-table .watchlist-star:hover {
+  color: rgba(245, 135, 45, 0.9);
+  transform: scale(1.15);
+}
+.crypto-table .watchlist-star.on {
+  color: #f5872d;
+}
+.market-cap{
+    text-align: right;
+}
+.table-layouts:last-child{
+    border: none;
+}
+.table-layouts div{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.table-layouts div img{
+    width: 35px;
+}
+.table-layouts .green{
+color: #00d515;
+text-align: center;
+}
+.table-layouts .red{
+    color: #ff4646;
+    text-align: center;
+}
+
+.coin-detail-panel {
+  max-width: 800px;
+  margin: 24px auto 0;
+  background: linear-gradient(rgba(245, 135, 45, 0.25), rgba(63, 39, 202, 0.25));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 24px;
+}
+.coin-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.coin-detail-icon {
+  width: 48px;
+  height: 48px;
+}
+.coin-detail-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  background: linear-gradient(90deg, #f5872d, #3f27ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.coin-detail-rank {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+.coin-detail-close {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #ddd;
+  font-size: 1.75rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+}
+.coin-detail-close:hover {
+  color: #fff;
+}
+.coin-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.coin-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.coin-detail-label {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+.coin-detail-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.coin-detail-value.green { color: #00d515; }
+.coin-detail-value.red { color: #ff4646; }
+.coin-detail-view {
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #f5872d, #3f27ca);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.coin-detail-view:hover {
+  opacity: 0.9;
+}

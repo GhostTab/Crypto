@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Outfit", sans-serif;
+}
+html {
+  scroll-behavior: smooth;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+.app{
+    min-height: 100vh;
+    background-color: rgb(20, 20, 20);
+    color: white;
+}
+
+/* Page transition: fade + slide up when navigating */
+.page-transition {
+  animation: pageFadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+  }
+  ::-webkit-scrollbar-track {
+    background: #666666; /* Background of the scrollbar track */
+  }
