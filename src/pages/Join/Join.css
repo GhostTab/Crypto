@@ -4,16 +4,18 @@
 }
 
 .join-card {
-  background: linear-gradient(rgba(245, 135, 45, 0.25), rgba(63, 39, 202, 0.25));
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(44, 38, 56, 0.08);
+  border-radius: 16px;
   padding: 40px;
   text-align: center;
   animation: joinCardIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   transition: box-shadow 0.35s ease, transform 0.35s ease;
+  box-shadow: 0 8px 32px rgba(95, 61, 140, 0.1);
 }
 .join-card:hover {
-  box-shadow: 0 12px 40px rgba(63, 39, 202, 0.25);
+  box-shadow: 0 12px 40px rgba(95, 61, 140, 0.15);
 }
 @keyframes joinCardIn {
   from { opacity: 0; transform: scale(0.96) translateY(16px); }
@@ -23,16 +25,14 @@
 .join-card h2 {
   font-size: 1.75rem;
   margin: 0 0 12px;
-  background: linear-gradient(90deg, #f5872d, #3f27ca);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #2C2638;
+  font-weight: 700;
 }
 
 .join-card p {
   margin: 0 0 28px;
   line-height: 1.5;
-  color: #ddd;
+  color: #666;
 }
 
 .join-actions {
@@ -51,32 +51,57 @@
   padding: 12px 28px;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   border: none;
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .join-btn.primary {
-  background: linear-gradient(90deg, #f5872d, #3f27ca);
-  color: white;
+  background: #5F3D8C;
+  color: #fff;
 }
 
 .join-btn.primary:hover {
-  opacity: 0.95;
+  background: #4a2f6d;
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(63, 39, 202, 0.45);
+  box-shadow: 0 8px 24px rgba(95, 61, 140, 0.35);
 }
 
 .join-btn.secondary {
   background: transparent;
-  color: #ddd;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #2C2638;
+  border: 1px solid rgba(44, 38, 56, 0.25);
 }
 
 .join-btn.secondary:hover {
-  border-color: #3f27ca;
-  color: #fff;
+  border-color: #5F3D8C;
+  color: #5F3D8C;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(63, 39, 202, 0.25);
+  box-shadow: 0 6px 20px rgba(95, 61, 140, 0.15);
+}
+
+@media (max-width: 768px) {
+  .join-section {
+    padding: 0 12px 60px;
+  }
+  .join-card {
+    padding: 28px 20px;
+  }
+  .join-card h2 {
+    font-size: 1.5rem;
+  }
+  .join-actions {
+    flex-direction: column;
+  }
+  .join-btn {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .join-card {
+    padding: 24px 16px;
+  }
 }

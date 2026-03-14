@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { CoinContext } from '../../context/CoinContext'
 import '../Home/Home.css'
@@ -69,14 +69,22 @@ const Watchlist = () => {
           <p></p>
         </div>
         {loading ? (
-          <div className="table-layouts" style={{ cursor: 'default', background: 'transparent' }}>
-            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '24px' }}>Loading...</p>
-          </div>
+          <>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="table-layouts table-skeleton" aria-hidden="true">
+                <span className="skeleton" />
+                <span className="skeleton" />
+                <span className="skeleton" />
+                <span className="skeleton" />
+                <span className="skeleton" />
+                <span className="skeleton" />
+              </div>
+            ))}
+          </>
         ) : watchlistCoins.length === 0 ? (
-          <div className="table-layouts" style={{ cursor: 'default', background: 'transparent' }}>
-            <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '24px' }}>
-              No coins in your watchlist. Add some from Market or a coin page.
-            </p>
+          <div className="table-layouts watchlist-empty-state">
+            <p>No coins in your watchlist yet.</p>
+            <Link to="/market" className="watchlist-empty-cta">Add your first coin</Link>
           </div>
         ) : (
           watchlistCoins.map((item) => (

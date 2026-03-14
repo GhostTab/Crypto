@@ -9,11 +9,14 @@ import './Alerts.css'
 const Alerts = () => {
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { currency } = useContext(CoinContext)
+  const { currency, allCoin } = useContext(CoinContext)
   const [alerts, setAlerts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [form, setForm] = useState({ coin_id: 'bitcoin', condition: 'above', target_price: '', currency: currency?.name || 'usd' })
+  const coinOptions = (allCoin || []).slice(0, 150)
+  const defaultCoinId = coinOptions[0]?.id || 'bitcoin'
+  const [form, setForm] = useState({ coin_id: defaultCoinId, condition: 'above', target_price: '', currency: currency?.name || 'usd' })
   const [submitError, setSubmitError] = useState('')
+  const [confirmMessage, setConfirmMessage] = useState('')
 
   useEffect(() => {
     setForm((f) => ({ ...f, currency: currency?.name || 'usd' }))
@@ -36,30 +39,45 @@ const Alerts = () => {
     fetchAlerts()
   }, [user?.id])
 
+  function getFriendlyAlertError(msg) {
+    if (!msg) return 'Could not add alert. Please try again.'
+    const m = msg.toLowerCase()
+    if (m.includes('foreign key') || m.includes('user')) return 'Session expired. Please sign in again.'
+    if (m.includes('duplicate') || m.includes('unique')) return 'You already have an alert for this coin and price.'
+    return msg
+  }
+
   const handleAdd = async (e) => {
     e.preventDefault()
     setSubmitError('')
+    setConfirmMessage('')
     const price = parseFloat(form.target_price)
     if (!price || price <= 0) {
-      setSubmitError('Enter a valid target price.')
+      setSubmitError('Enter a valid target price (e.g. 50000).')
       return
     }
     if (!user) return
+    const coinId = (form.coin_id || '').trim().toLowerCase()
+    const coin = coinOptions.find((c) => (c.id || '').toLowerCase() === coinId)
+    if (!coinId || !coin) {
+      setSubmitError('Please choose a coin from the list so we can notify you correctly.')
+      return
+    }
     const { error } = await supabase.from('price_alerts').insert({
       user_id: user.id,
-      coin_id: form.coin_id.trim().toLowerCase(),
+      coin_id: coinId,
       condition: form.condition,
       target_price: price,
       currency: form.currency,
     })
     if (error) {
-      setSubmitError(error.message || 'Failed to add alert.')
+      setSubmitError(getFriendlyAlertError(error.message))
       return
     }
     setAlerts((prev) => [
       {
         id: crypto.randomUUID(),
-        coin_id: form.coin_id,
+        coin_id: coinId,
         condition: form.condition,
         target_price: price,
         currency: form.currency,
@@ -69,6 +87,9 @@ const Alerts = () => {
       ...prev,
     ])
     setForm((f) => ({ ...f, target_price: '' }))
+    const coinLabel = coin ? `${coin.name} (${coin.symbol?.toUpperCase()})` : coinId
+    setConfirmMessage(`We'll notify you when ${coinLabel} goes ${form.condition === 'above' ? 'above' : 'below'} ${sym}${price.toLocaleString()}.`)
+    setTimeout(() => setConfirmMessage(''), 6000)
   }
 
   const removeAlert = async (id) => {
@@ -103,15 +124,19 @@ const Alerts = () => {
       <form onSubmit={handleAdd} className="alerts-form">
         <div className="alerts-form-row">
           <div className="alerts-field">
-            <label htmlFor="coin_id">Coin ID</label>
-            <input
+            <label htmlFor="coin_id">Coin</label>
+            <select
               id="coin_id"
-              type="text"
-              placeholder="e.g. bitcoin, ethereum"
-              value={form.coin_id}
+              value={coinOptions.some((c) => c.id === form.coin_id) ? form.coin_id : defaultCoinId}
               onChange={(e) => setForm((f) => ({ ...f, coin_id: e.target.value }))}
               required
-            />
+            >
+              {coinOptions.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name} ({c.symbol?.toUpperCase()})
+                </option>
+              ))}
+            </select>
           </div>
           <div className="alerts-field">
             <label htmlFor="condition">Condition</label>
@@ -138,7 +163,9 @@ const Alerts = () => {
           </div>
           <button type="submit" className="alerts-submit">Add alert</button>
         </div>
+        <p className="alerts-form-note">We only support coins from the market list so we can match prices and notify you correctly.</p>
         {submitError && <p className="alerts-error">{submitError}</p>}
+        {confirmMessage && <p className="alerts-confirm" role="status">{confirmMessage}</p>}
       </form>
 
       <div className="alerts-list">
@@ -146,12 +173,20 @@ const Alerts = () => {
         {loading ? (
           <p className="alerts-loading">Loading...</p>
         ) : alerts.length === 0 ? (
-          <p className="alerts-empty">No alerts yet. Add one above.</p>
+          <div className="alerts-empty-state">
+            <p className="alerts-empty">No alerts yet. Create one above to get notified when prices hit your target.</p>
+            <button type="button" className="alerts-empty-cta" onClick={() => document.getElementById('coin_id')?.focus()}>
+              Create your first alert
+            </button>
+          </div>
         ) : (
           <ul>
-            {alerts.map((a) => (
+            {alerts.map((a) => {
+              const coin = (allCoin || []).find((c) => (c.id || '').toLowerCase() === (a.coin_id || '').toLowerCase())
+              const coinLabel = coin ? `${coin.name} (${coin.symbol?.toUpperCase()})` : a.coin_id
+              return (
               <li key={a.id} className="alerts-item">
-                <span className="alerts-item-coin">{a.coin_id}</span>
+                <span className="alerts-item-coin">{coinLabel}</span>
                 <span className="alerts-item-condition">
                   Notify when {a.condition} {sym}{Number(a.target_price).toLocaleString()}
                 </span>
@@ -167,7 +202,8 @@ const Alerts = () => {
                   Remove
                 </button>
               </li>
-            ))}
+              )
+            })}
           </ul>
         )}
       </div>

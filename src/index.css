@@ -13,10 +13,11 @@ a{
     text-decoration: none;
     color: inherit;
 }
-.app{
-    min-height: 100vh;
-    background-color: rgb(20, 20, 20);
-    color: white;
+.app {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #E0D8ED 0%, #C7B5E1 20%, #E8DDF0 45%, #F7E5D5 70%, #FCD8B9 100%);
+  background-attachment: fixed;
+  color: #2C2638;
 }
 
 /* Page transition: fade + slide up when navigating */
@@ -35,8 +36,88 @@ a{
 }
 
 ::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(44, 38, 56, 0.08);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(95, 61, 140, 0.35);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(95, 61, 140, 0.5);
+}
+
+/* Keyboard & a11y: visible focus */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid #5F3D8C;
+  outline-offset: 2px;
+}
+button:focus-visible,
+a:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 2px solid #5F3D8C;
+  outline-offset: 2px;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 0.8rem;
+  color: rgba(44, 38, 56, 0.6);
+}
+.app-footer a {
+  color: #5F3D8C;
+}
+
+.app-reengagement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(95, 61, 140, 0.12);
+  border-bottom: 1px solid rgba(95, 61, 140, 0.2);
+  position: relative;
+}
+.app-reengagement p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #2C2638;
+}
+.app-reengagement-link {
+  color: #5F3D8C;
+  font-weight: 600;
+  text-decoration: none;
+}
+.app-reengagement-link:hover {
+  text-decoration: underline;
+}
+.app-reengagement-dismiss {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #666;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+}
+.app-reengagement-dismiss:hover {
+  color: #2C2638;
+}
+
+@media (max-width: 768px) {
+  .app-footer {
+    padding: 12px 16px;
+    font-size: 0.75rem;
   }
-  ::-webkit-scrollbar-track {
-    background: #666666; /* Background of the scrollbar track */
-  }
+}

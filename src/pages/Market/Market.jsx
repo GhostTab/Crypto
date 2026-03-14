@@ -4,8 +4,20 @@ import '../Home/Home.css'
 import { CoinContext } from '../../context/CoinContext'
 import { useAuth } from '../../context/AuthContext'
 
+function getTimeAgo(date) {
+  if (!date) return null
+  const d = date instanceof Date ? date : new Date(date)
+  const sec = Math.floor((Date.now() - d.getTime()) / 1000)
+  if (sec < 60) return 'Just now'
+  const min = Math.floor(sec / 60)
+  if (min < 60) return `${min} min ago`
+  const hr = Math.floor(min / 60)
+  if (hr < 24) return `${hr}h ago`
+  return `${Math.floor(hr / 24)}d ago`
+}
+
 const Market = () => {
-  const { allCoin, currency } = useContext(CoinContext)
+  const { allCoin, currency, lastUpdated } = useContext(CoinContext)
   const { user, isInWatchlist, addToWatchlist, removeFromWatchlist } = useAuth()
   const [displayCoin, setDisplayCoin] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -23,6 +35,7 @@ const Market = () => {
       )
     : displayCoin
 
+  const isLoading = allCoin.length === 0 && !searchTerm
   const handleSearch = (e) => {
     e.preventDefault()
   }
@@ -38,10 +51,16 @@ const Market = () => {
             placeholder="Search Crypto"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Search crypto"
           />
           <button type="submit">Search</button>
         </form>
       </div>
+      {lastUpdated && (
+        <div className="table-meta">
+          <span className="table-updated">Updated {getTimeAgo(lastUpdated)}</span>
+        </div>
+      )}
       <div className={`crypto-table ${user ? 'has-watchlist' : ''}`}>
         <div className="table-layout" id="table-layout">
           <p>#</p>
@@ -51,10 +70,23 @@ const Market = () => {
           <p className="market-cap">Market Cap</p>
           {user && <p></p>}
         </div>
-        {filteredCoins.length === 0 ? (
+        {isLoading ? (
+          <>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+              <div key={i} className="table-layouts table-skeleton" aria-hidden="true">
+                <span className="skeleton" />
+                <span className="skeleton" />
+                <span className="skeleton" />
+                <span className="skeleton" />
+                <span className="skeleton" />
+                {user && <span className="skeleton" />}
+              </div>
+            ))}
+          </>
+        ) : filteredCoins.length === 0 ? (
           <div className="table-layouts" style={{ cursor: 'default', background: 'transparent' }}>
             <p style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '24px' }}>
-              {searchTerm ? 'No coins match your search.' : 'Loading...'}
+              {searchTerm ? 'No coins match your search.' : 'No data yet.'}
             </p>
           </div>
         ) : (

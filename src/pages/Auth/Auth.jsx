@@ -29,6 +29,16 @@ const Auth = () => {
     setSuccess('')
   }
 
+  function getFriendlyAuthError(msg) {
+    if (!msg) return 'Something went wrong. Please try again.'
+    const m = msg.toLowerCase()
+    if (m.includes('invalid login') || m.includes('invalid credentials')) return 'Wrong email or password. Please try again.'
+    if (m.includes('email not confirmed')) return 'Please confirm your email using the link we sent you, then sign in.'
+    if (m.includes('already registered') || m.includes('already exists')) return 'An account with this email already exists. Try signing in.'
+    if (m.includes('password')) return 'Password must be at least 6 characters.'
+    return msg
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
@@ -46,7 +56,7 @@ const Auth = () => {
       if (mode === 'signin') {
         const { data, error: err } = await signIn(form.email, form.password)
         if (err) {
-          setError(err.message || 'Sign in failed.')
+          setError(getFriendlyAuthError(err.message))
           return
         }
         if (data?.user) {
@@ -58,7 +68,7 @@ const Auth = () => {
           full_name: form.name || undefined,
         })
         if (err) {
-          setError(err.message || 'Sign up failed.')
+          setError(getFriendlyAuthError(err.message))
           return
         }
         if (data?.user?.identities?.length === 0) {
